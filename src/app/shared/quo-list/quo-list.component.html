@@ -1,0 +1,72 @@
+<div *ngIf="localDataSource" class="{{headerClass}}">
+  <div class="fix-header" [style.height.px]="height" [ngClass]="{'panel-height': height, '' : !height}"
+       [style.outline]="'none'" #scrollContainer
+       id="divscrollContainer" tabindex="1">
+    <ul class="list-group list-group-flush" [style.width.px]="width">
+      <li *ngIf="headerItems && headerItems.length>0"
+          class="border-left-0 border-right-0 border-top-0 header">
+        <div class="row m-0 head-table-tag">
+              <span *ngIf="showCheckbox && localDataSource.length > 0" class="custom-checkbox cursor-pointer">
+              <input type="checkbox" class="custom-control-input cursor-pointer" id="chk_12"
+                     name="chk_12" [(ngModel)]="isSelected" (change)="onChangeHeaderCheckbox(isSelected)">
+                 <label #checkBoxLabel for="chk_12" class="custom-control-label cursor-pointer">
+              </label>
+                 </span>
+          <ng-template ngFor let-headerItem [ngForOf]="headerItems">
+            <div *ngIf="widthInPerc" class="{{headerItem.widthClass}}" [style.width.%]="headerItem.widthInPerc">
+                        <span class="m-0">
+                            <span class="non-selectable" [ngClass]="{'cursor-pointer' : headerItem.sortable}"
+                                  (click)="headerItem.sortable && onSort(headerItem)">
+                                {{headerItem.title}}
+                            </span>
+                            <span *ngIf="headerItem.sortable" (click)="headerItem.sortable && onSort(headerItem)"
+                                  [ngClass]="{'text-icon cursor-pointer':headerItem.sortable}"><i
+                              [class]="headerItem.sortClassName"
+                              aria-hidden="true"></i>
+                            </span>
+                        </span>
+            </div>
+            <div *ngIf="!widthInPerc" class="{{headerItem.widthClass}}" [style.width.px]="headerItem.widthInPx">
+                       <span class="m-0">
+                            <span class="non-selectable pointer"
+                                  (click)="headerItem.sortable && onSort(headerItem)">
+                                {{headerItem.title}}
+                            </span>
+                            <span *ngIf="headerItem.sortable" [ngClass]="{'text-icon':headerItem.sortable}"><i
+                              [class]="headerItem.sortClassName"
+                              aria-hidden="true"></i>
+                            </span>
+                        </span>
+            </div>
+          </ng-template>
+        </div>
+      </li>
+      <span *ngIf="localDataSource.length > 0; else noDataTemplate">
+      <li class="body-table-tag {{itemClassName}}"
+          *ngFor="let item of localDataSource;" id="li_{{i}}">
+        <ng-container
+          *ngTemplateOutlet="templateOption || defaultItemTemplate; context: { $implicit: item }">
+        </ng-container>
+      </li>
+      </span>
+      <ng-template #noDataTemplate>
+        <li class="body-table-tag text-center border-0">
+          <h6 class="mt-2">No Record Found</h6>
+        </li>
+      </ng-template>
+    </ul>
+    <ng-template #defaultItemTemplate let-item>
+      <p>{{ item?.ProductName }}</p>
+      <p>{{ item?.desc }}</p>
+    </ng-template>
+  </div>
+</div>
+<div class="pagination-tag" *ngIf="totalCount && totalCount > 0 && showPagination">
+  <ngb-pagination
+    [collectionSize]="totalCount" (pageChange)="onPageChanged($event)" [maxSize]="10" [(page)]="page"
+    [pageSize]="tasksPerPage" [rotate]="true" [ellipses]="true" [boundaryLinks]="true">
+    <ng-template ngbPaginationPrevious><span class="icon-pagination-leftarrow"></span></ng-template>
+    <ng-template ngbPaginationNext><span class="icon-pagination-rightarrow"></span></ng-template>
+  </ngb-pagination>
+</div>
+

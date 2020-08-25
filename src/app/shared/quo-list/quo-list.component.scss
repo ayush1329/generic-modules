@@ -1,0 +1,137 @@
+.display-table {
+  margin-top: 15px;
+  border-radius: 6px;
+  padding: 40px 40px 0;
+  min-height: 150px;
+  .table-header-bg {
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 18px;
+  }
+  .custom-control-label::before,
+  .custom-control-label::after {
+    left: 1px !important;
+    top: 9px !important;
+    height: 11px;
+    width:11px;
+  }
+
+  .custom-control-input:checked ~ .custom-control-label.minus-bg::before {
+    background-color: transparent;
+    border-color: transparent;
+  }
+  .custom-control-input:checked ~ .custom-control-label.minus-bg::after {
+    // background-image: url('../../../../assets/images/minus.svg');
+    background-size: 94%;
+    height: 16px;
+    width: 30px;
+    left: 1px !important;
+
+  }
+  .fix-header {
+    .header {
+      top: 0;
+      height: auto;
+      border: none;
+    }
+  }
+}
+
+.display-inner-table {
+  padding: 10px 15px;
+  box-shadow: none;
+  border-radius: 0;
+  min-height: 150px;
+  .panel-height {
+    overflow-y: auto;
+  }
+  .fix-header {
+    .header {
+      position: sticky;
+      top: 0;
+      height: auto;
+      border: none;
+    }
+  }
+}
+
+.fix-header {
+  .head-table-tag {
+    .non-selectable {
+      line-height: 17px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.43px;
+      text-align: right;
+    }
+    .icon-Sorting {
+      font-size: 9px;
+    }
+  }
+  span {
+    li {
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+  }
+  .body-table-tag {
+    padding: 16px 0px;
+    border-bottom: 1px solid #EAEAEA;
+    font-size: 12px;
+    h6 {
+      color: #9e9696;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+}
+
+.list-group.list-group-flush .list-group-item {
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0
+}
+
+.list-group.list-group-flush .list-group-item:last-child {
+  margin-bottom: -1px
+}
+
+.list-group.list-group-flush:first-child .list-group-item:first-child {
+  border-top: 0
+}
+
+.list-group.list-group-flush:last-child .list-group-item:last-child {
+  margin-bottom: 0;
+  border-bottom: 0
+}
+
+.text-icon {
+  color: #7e7e7e;
+  font-size: 4px;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #E2E2E2;
+}
+
+::-webkit-scrollbar
+{
+  width: 9px;
+  background-color: #E2E2E2;
+}
+
+::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #C9C9C9;
+}

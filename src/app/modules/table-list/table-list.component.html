@@ -1,0 +1,38 @@
+<div class="container" style="max-width: none;">
+  <h2 style="padding-top:10px;">Table List Component</h2>
+</div>
+<div [style.height.px]="listHeight" style="color:#000;" *ngIf="listData">
+  <app-quo-list #list [dataSource]="listData" [headerItems]="listHeaders" [tasksPerPage]="100" [totalCount]="100"
+    (pageChange)="onPageChange($event)" (sort)="onSort($event)" [serverSidePagination]="false" [widthInPerc]="true"
+    itemClassName="border-left-0 border-right-0" headerClass="display-table">
+    <ng-template quo-list-item-select let-item>
+      <div class="row m-0 p-0 pl-2">
+        <div class="text-left list-item w-16 custom-control custom-checkbox" style="width: 160px;">
+          <input type="checkbox" class="custom-control-input" id="c_{{item.id}}"
+                 name="c_{{item.id}}" [(ngModel)]="item.isSelected" (change)="onChangeCheck(item)">
+          <label class="custom-control-label cursor-pointer w-75"
+                 for="c_{{item.id}}">
+            <p>{{item.col1}}</p>
+          </label>
+        </div>
+        <div class="text-left" style="width: 160px;">
+          {{item.col2}}
+        </div>
+        <div class="text-left" style="width: 160px;">
+          {{item.col3}}
+        </div>
+        <div class="text-left" style="width: 120px;">
+          {{item.col4}}
+        </div>
+        <div class="text-left" style="width: 200px;">
+          {{item.col5}}
+        </div>
+        <div class="text-left" style="width: 120px;">
+          {{item.col6}}
+        </div>
+      </div>
+    </ng-template>
+  </app-quo-list>
+</div>
+
+<h1>{{result}}</h1>

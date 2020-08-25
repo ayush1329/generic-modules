@@ -1,0 +1,67 @@
+<div class="container" style="max-width: none;">
+<h2 style="padding-top:10px;">Table List Accordion Component</h2>
+</div>
+<div class="card">
+    <div class="card-body" [style.height.px]="accordionHeight" style="overflow-y: overlay;">
+        <ng-template #recursiveData let-accordionData>
+            <ng-template #headerTemplate>
+                <div class="row m-0 p-0 pl-4" style="cursor: pointer;">
+                    <div class="text-left" style="width: 150px">
+                        Data 1
+                    </div>
+                    <div class="text-left" style="width: 160px;">
+                        Data 2
+                    </div>
+                    <div class="text-left" style="width: 160px;">
+                        Data 3
+                    </div>
+                    <div class="text-left" style="width: 120px;">
+                        Data 4
+                    </div>
+                    <div class="text-left" style="width: 200px;">
+                        Data 5
+                    </div>
+                    <div class="text-left" style="width: 100px;">
+                        Data 6
+                    </div>
+                  </div>
+            </ng-template>
+            <quo-list-accordion [title]="'Accordion Data'" [treeData]="accordionData" [isExpand]="isExpand"
+                [headerTemplate]="headerTemplate">
+                <div [id]="accordionData.id"
+                    [class]="isExpand? 'card-body p-0' : 'card-body p-0'">
+                    <app-quo-list #list [dataSource]="accordionData.listData" [headerItems]="listHeaders" [totalRecord]="100" [height]="listHeight"
+                    (pageChange)="onPageChange($event)" (sort)="onSort($event)" [serverSidePagination]="false"
+                    [itemClassName]="'border-left-0 border-right-0'">
+                        <ng-template quo-list-item-select let-item>
+                            <div class="row m-0 p-0 pl-2">
+                              <div class="text-left" style="width: 150px">
+                                {{item.col1}}
+                              </div>
+                              <div class="text-left" style="width: 160px;">
+                                {{item.col2}}
+                              </div>
+                              <div class="text-left" style="width: 160px;">
+                                {{item.col3}}
+                              </div>
+                              <div class="text-left" style="width: 120px;">
+                                {{item.col4}}
+                              </div>
+                              <div class="text-left" style="width: 200px;">
+                                {{item.col5}}
+                              </div>
+                              <div class="text-left" style="width: 120px;">
+                                {{item.col6}}
+                              </div>
+                            </div>
+                          </ng-template>
+                    </app-quo-list>
+                </div>
+            </quo-list-accordion>
+        </ng-template>
+        <div *ngFor="let accordionData of accData">
+            <ng-container *ngTemplateOutlet="recursiveData; context:{ $implicit: accordionData }">
+            </ng-container>
+        </div>
+    </div>
+</div>

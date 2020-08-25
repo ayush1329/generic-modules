@@ -1,0 +1,151 @@
+<div class="arrow"></div>
+<div class="filter-app" *ngIf="showFilter">
+  <ng-container *ngTemplateOutlet="templateOption || defaultItemTemplate; context: { $implicit: localFilterConfig }">
+  </ng-container>
+
+  <ng-template #defaultItemTemplate>
+    <div class="row m-0">
+      <div class="col-md-5 pl-1">
+        <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
+          <li class="nav-item" *ngFor="let configData of localFilterConfig; let i= index">
+            <a *ngIf="configData.active" class="nav-link" [class.active]="i == activeIndex" data-toggle="tab"
+              id="{{configData.id}}_tab" role="tab" aria-selected="true"
+              (click)="activeTab(i)">{{configData.displayName}}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-7 pl-0">
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show" *ngFor="let configData of localFilterConfig; let j = index"
+            [class.active]="j == activeIndex" id="{{configData.id}}" role="tabpanel">
+            <div class="row m-0 pt-3 position-relative" *ngIf="configData.searchEnabled">
+              <input class="form-control" type="text" placeholder="Search by {{configData.displayName}}"
+                [(ngModel)]="searchText" (keyup)="onSearch($event)" />
+              <span class="icon-search"></span>
+            </div>
+
+            <!--Multi Select Template-->
+
+            <div class="filter-attribute" *ngIf="configData.type === filterType.MultiSelect">
+              <div class="position-relative"
+                *ngIf="configData.values && configData.values.length > 0; else noValueFound">
+                <ng-container
+                  *ngTemplateOutlet="multiSelectTemplate || defaultMultiSelectTemplate; context: { $implicit: configData }">
+                </ng-container>
+                <ng-template #defaultMultiSelectTemplate>
+                  <div class="row m-0 filter-attribute-item"
+                    *ngFor="let dataValue of configData.values | search_filter: configData.allFilterValues : searchText">
+                    <span class="custom-checkbox cursor-pointer" *ngIf="dataValue !== '-1'; else noValueFound">
+                      <input type="checkbox" class="custom-control-input cursor-pointer" id="ms_{{dataValue.id}}"
+                        name="ms_{{dataValue.id}}" [(ngModel)]="dataValue.selected"
+                        (change)="onSelectListItem(configData, dataValue)">
+                      <label for="ms_{{dataValue.id}}" class="custom-control-label cursor-pointer">
+                        <span class="label-item">{{dataValue.name}}</span>
+                      </label>
+                    </span>
+                  </div>
+                </ng-template>
+              </div>
+              <div
+                *ngIf="(!searchText || searchText && searchText.length < 1) && configData.values && configData.values.length > (configData.numberOfRecords) - 1 "
+                class="row m-0 p-3 text-center cursor-pointer">
+                <p class="w-100" (click)="onLoadElement(configData, $event)">Load More</p>
+              </div>
+            </div>
+
+
+            <!--Single Select Template-->
+
+            <div class="filter-attribute" *ngIf="configData.type === filterType.SingleSelect">
+              <span *ngIf="configData.values && configData.values.length > 0; else noValueFound">
+                <ng-container
+                  *ngTemplateOutlet="singleSelectTemplate || defaultSingleSelectTemplate; context: { $implicit: configData }">
+                </ng-container>
+                <ng-template #defaultSingleSelectTemplate>
+                  <div class="row m-0 filter-attribute-item"
+                    *ngFor="let dataValue of configData.values | search_filter: configData.allFilterValues : searchText">
+                    <span class="custom-checkbox cursor-pointer" *ngIf="dataValue !== '-1'; else noValueFound">
+                      <input type="checkbox" class="custom-control-input cursor-pointer" id="ss_{{dataValue.id}}"
+                        name="ss_{{dataValue.id}}" [(ngModel)]="dataValue.selected"
+                        (change)="onSelectListItem(configData, dataValue)">
+                      <label for="ss_{{dataValue.id}}" class="custom-control-label cursor-pointer">
+                        <span class="label-item">{{dataValue.name}}</span>
+                      </label>
+                    </span>
+                  </div>
+                </ng-template>
+              </span>
+              <div
+                *ngIf="(!searchText || searchText && searchText.length < 1) && configData.values && configData.values.length > (configData.numberOfRecords) - 1"
+                class="row m-0 p-3 text-center cursor-pointer">
+                <p class="w-100" (click)="onLoadElement(configData, $event)">Load More</p>
+              </div>
+            </div>
+
+            <!--Range Slider Template-->
+
+            <div class="filter-attribute" *ngIf="configData.type === filterType.Range">
+              <span>
+                <ng-container
+                  *ngTemplateOutlet="rangeTemplate || defaultRangeTemplate; context: { $implicit: configData }">
+                </ng-container>
+                <ng-template #defaultRangeTemplate>
+                  <div class="row m-0 filter-attribute-item">
+                    <ng-container
+                      *ngTemplateOutlet="rangeInputTemplate || defaultRangeInputTemplate; context: { $implicit: configData }">
+                    </ng-container>
+                    <ng-template #defaultRangeInputTemplate>
+                      <div class="row m-0 range" *ngIf="configData.sliderOptions.showRangeInputTextBox">
+                        <div class="col-6 pl-0">
+                          <div class="form-group">
+                            <label for="sRange" class="font-weight-normal float-left mb-1">Start Range</label>
+                            <input type="number" class="form-control position-relative" placeholder="Start Range"
+                              id="sRange" (keyup)="onChangeRangeInput(configData, $event)"
+                              (keydown)="onChangeRangeInput(configData, $event)" [(ngModel)]="configData.minValue" />
+                          </div>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-4 pl-0 pr-0 float-right">
+                          <div class="form-group">
+                            <label for="eRange" class="font-weight-normal float-left mb-1">End Range</label>
+                            <input type="number" class="form-control  position-relative" placeholder="End Range"
+                              id="eRange" (keydown)="onChangeRangeInput(configData, $event)"
+                              (keyup)="onChangeRangeInput(configData, $event)" [(ngModel)]="configData.maxValue" />
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                    <div
+                      [class]="configData.minValue === configData.maxValue ?'hide-min row m-0 w-100 position-relative': 'row m-0 w-100 position-relative'">
+                      <ng5-slider (userChange)="onChangeSliderValue(configData, $event)" [(value)]="configData.minValue"
+                        [(highValue)]="configData.maxValue" [options]="configData.sliderOptions.sliderOptions">
+                      </ng5-slider>
+                      <span class="min-value position-absolute">{{configData.sliderOptions.sliderOptions.floor}}</span>
+                      <span
+                        class="max-value position-absolute float-right">{{configData.sliderOptions.sliderOptions.ceil}}</span>
+                    </div>
+                  </div>
+                </ng-template>
+              </span>
+            </div>
+
+            <ng-template #noValueFound>
+              <div class="no-value-found font-weight-normal">
+                No Value Found
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div class="filter-footer">
+        <button class="btn btn-primary btn-transparent  font-weight-bold text-center" (click)="onClearAllFilters()">
+          Clear All
+        </button>
+        <button [disabled]="!isFilterSelected"
+          class="btn btn-primary ml-3 text-center font-weight-bold position-relative" (click)="onApplyFilters()">
+          Apply
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</div>

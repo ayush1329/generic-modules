@@ -1,0 +1,7 @@
+<div class="container" style="max-width: none;">
+<ul class="list-group">
+    <li class="list-group-item" *ngFor="let mod of modules">
+        <a (click)="onClickRoute(mod.url)" style="cursor: pointer;"> {{mod.title}}</a>   
+    </li>
+</ul>
+</div>

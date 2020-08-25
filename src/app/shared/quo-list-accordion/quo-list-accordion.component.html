@@ -1,0 +1,29 @@
+<div class="card-group">
+    <div class="card card-default text-white border-0">
+        <div class="card-heading border-bottom" [style.background-color]="'#b3507d'">
+            <a role="button" (click)="isExpand =! isExpand" style="color:#fff;text-decoration: none;"
+                (click)="toggleIcon($event)" [class]="isExpand? 'collapsed' : ''">
+                <div class="row m-0" style="padding-top:12px; padding-bottom:12px;">
+                    <div class="col-1 pl-2" style="flex:none; width:40px !important; position:absolute;">
+                        <a *ngIf="showArrow" [class]="isExpand? 'fa fa-chevron-down cat-header' : 'fa fa-chevron-right cat-header'">
+                        </a>
+                    </div>
+                    <div class="col-12 p-0">
+                        <ng-container *ngTemplateOutlet="headerTemplate || defaultHeaderTemplate;">
+                        </ng-container>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div [id]="treeData.id" [class]="isExpand? 'collapse show' : 'collapse'">
+            <div class="card-body p-0" style="color : #000 !important;">
+                <ng-content>
+                </ng-content>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #defaultHeaderTemplate>
+    <h5>{{title}}</h5>
+</ng-template>
