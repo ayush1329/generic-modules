@@ -137,7 +137,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   onApplyFilters() {
     this.appliedFilters.emit({filters: this.filters});
-    this.showFilter = false;
+    // this.showFilter = false;
     if (this.filterService.isFilterSelected) {
       this.filterService.initialFilters = [];
       this.filterService.initialFilters = JSON.parse(JSON.stringify(this.localFilterConfig));

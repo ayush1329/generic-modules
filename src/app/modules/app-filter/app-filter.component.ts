@@ -100,10 +100,12 @@ export class AppFilterComponent implements OnInit {
             "lookups": null,
             "widgetAlias": null,
             "roundingKey": "decimalPlacesForRate",
-            "minValue": 0.0016999999999999997,
-            "maxValue": 0.0016999999999999997
+            "minValue": 0.001,
+            "maxValue": 1
         }
     ];
+
+    public filterResult: any;
 
 
     @ViewChild('filterPopup', { static: true }) filterPopup: FilterComponent;
@@ -134,7 +136,7 @@ export class AppFilterComponent implements OnInit {
     }
 
     onApplyFilters(appliedFilters: any) {
-        console.log(appliedFilters);
+        this.filterResult = JSON.stringify(appliedFilters);
     }
 }
 
